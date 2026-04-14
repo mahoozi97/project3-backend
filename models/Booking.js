@@ -1,38 +1,39 @@
 const mongoose = require("mongoose");
 
-const bookingSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
+const bookingSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    cpr: {
+      type: Number,
+      required: true,
+    },
+    destination: {
+      type: String,
+      required: true,
+    },
+    date: {
+      type: Date,
+      required: true,
+    },
+    phoneNumber: {
+      type: Number,
+      required: true,
+    },
+    driver: {
+      type: String,
+      required: true,
+      enum: ["Ahmed", "Ali", "Husain", "Taha"],
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
-  cpr: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
-  destination: {
-    type: String,
-    required: true,
-  },
-  date: {
-    type: String,
-    required: true,
-  },
-  phoneNumber: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
-  driver: {
-    type: String,
-    required: true,
-    enum: ["Ahmed", "Ali", "Husain", "Taha"],
-  },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
-});
+  { timestamps: true },
+);
 
 const Booking = mongoose.model("Booking", bookingSchema);
 
