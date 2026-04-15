@@ -9,7 +9,7 @@ router.post("/", async (req, res) => {
     console.log("✅ new booking: ", createdBooking);
     res.status(201).json(createdBooking);
   } catch (error) {
-    console.log("❌ error creat a new booking: ", error);
+    console.log("❌ error create a new booking: ", error);
     res.status(500).json(error);
   }
 });
