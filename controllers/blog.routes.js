@@ -40,6 +40,36 @@ router.get("/:id", async (req, res) => {
 
     res.json(blog);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ error: err.message });
   }
 });
+
+//Update the blog
+
+router.put("/:id", async (req, res) => {
+  try {
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      req.params.id,
+      {
+        description: req.body.description,
+        image: req.body.image,
+      },
+      {
+        new: true, //return the UPDATED version of the document. by default, Mongoose returns the OLD document.
+      },
+    );
+    if (!updatedBlog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+    res.json(updatedBlog);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+//Routes left:
+//Delete a blog
+//ADD a comment to a blog
+// DELETE a comment
+
+module.exports = router;
