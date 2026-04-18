@@ -17,7 +17,11 @@ router.post("/", async (req, res) => {
 // get all booking
 router.get("/", async (req, res) => {
   try {
-    const allBooking = await Booking.find();
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ error: "You are not authorized" });
+    }
+
+    const allBooking = await Booking.find().sort({ _id: -1 });
     console.log("✅ fetched all booking successfully: ", allBooking);
     res.status(200).json(allBooking);
   } catch (error) {
@@ -26,8 +30,8 @@ router.get("/", async (req, res) => {
   }
 });
 
-// get by userId
-router.get("/my-booking", async (req, res) => {
+// get all booking by userId
+router.get("/my-bookings", async (req, res) => {
   try {
     const userId = req.user._id;
     const bookingByUserId = await Booking.find({ userId }).sort({ _id: -1 });
@@ -39,13 +43,38 @@ router.get("/my-booking", async (req, res) => {
   }
 });
 
+// get one booking by id & userId
+router.get("/:id", async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const foundBooking = await Booking.findOne({
+      _id: req.params.id,
+      userId: userId,
+    });
+
+    if (!foundBooking) {
+      return res.status(404).json({ error: "Booking not found" });
+    }
+
+    console.log("✅ fetched booking by Id & userId successfully", foundBooking);
+    res.status(200).json(foundBooking);
+  } catch (error) {
+    console.log("❌ Error fetching booking by Id & userId: ", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // edit the booking
 router.put("/:id", async (req, res) => {
   try {
-    const userId = req.user._id;
     const foundBooking = await Booking.findById(req.params.id);
 
-    if (!foundBooking.userId.equals(userId)) {
+    if (!foundBooking) {
+      return res.status(404).json({ error: "Booking not found" });
+    }
+
+    const userId = req.user._id;
+    if (!foundBooking.userId.equals(userId) && req.user.role !== "admin") {
       return res
         .status(403)
         .json({ error: "You are not authorized to edit this booking" });
@@ -67,10 +96,14 @@ router.put("/:id", async (req, res) => {
 // delete the booking
 router.delete("/:id", async (req, res) => {
   try {
-    const userId = req.user._id;
     const foundBooking = await Booking.findById(req.params.id);
 
-    if (!foundBooking.userId.equals(userId)) {
+    if (!foundBooking) {
+      return res.status(404).json({ error: "Booking not found" });
+    }
+
+    const userId = req.user._id;
+    if (!foundBooking.userId.equals(userId) && req.user.role !== "admin") {
       return res
         .status(403)
         .json({ error: "You are not authorized to cancel this booking" });
