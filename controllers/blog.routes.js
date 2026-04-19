@@ -102,19 +102,18 @@ router.post("/:id/comments", async (req, res) => {
 });
 
 // DELETE a comment
-(router.delete("/:id/comments/:commentsId"),
-  async (req, res) => {
-    try {
-      const blog = await Blog.findById(req.params.id);
+router.delete("/:id/comments/:commentsId", async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
 
-      if (!blog) {
-        return res.status(404).json({ message: "Blog not found" });
-      }
-      await blog.save();
-      res.status(200).json({ message: "Comment deleted successfully", blog });
-    } catch (err) {
-      res.status(500).json({ error: err.message });
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
     }
-  });
+    await blog.save();
+    res.status(200).json({ message: "Comment deleted successfully", blog });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 module.exports = router;
