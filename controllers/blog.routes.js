@@ -103,7 +103,7 @@ router.post("/:id/comments", async (req, res) => {
 });
 
 // DELETE a comment
-router.delete("/:id/comments/:commentsId", async (req, res) => ){
+router.delete("/:id/comments/:commentsId", async (req, res) => {
   try 
   {const blog = await Blog.findById(req.params.id)
 
