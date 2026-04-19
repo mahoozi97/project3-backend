@@ -27,6 +27,11 @@ const bookingSchema = new mongoose.Schema(
       required: true,
       enum: ["Ahmed", "Ali", "Husain", "Taha"],
     },
+    status: {
+      type: String,
+      enum: ["Pending ⏳", "Accepted ✅", "Rejected ❌"],
+      default: "Pending ⏳",
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
