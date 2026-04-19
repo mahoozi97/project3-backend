@@ -7,7 +7,7 @@ const bookingSchema = new mongoose.Schema(
       required: true,
     },
     cpr: {
-      type: Number,
+      type: String,
       required: true,
     },
     destination: {
@@ -26,6 +26,11 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: ["Ahmed", "Ali", "Husain", "Taha"],
+    },
+    status: {
+      type: String,
+      enum: ["Pending ⏳", "Accepted ✅", "Rejected ❌"],
+      default: "Pending ⏳",
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
