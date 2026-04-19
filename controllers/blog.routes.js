@@ -83,6 +83,24 @@ router.delete("/:id", async (req, res) => {
 });
 
 //ADD a comment to a blog
+router.post("/:id/comments", async (req, res) => {
+  try {
+    const { text, userId } = req.body;
+    const addedBlog = await Blog.findById(req.params.id);
+
+    if (!addedBlog) {
+      return res.status(404);
+    }
+
+    Blog.comments.push({ text, userId });
+    await Blog.save();
+
+    res.status(201).json();
+  } catch (err) {
+    res.status(500);
+  }
+});
+
 // DELETE a comment
 
 module.exports = router;
