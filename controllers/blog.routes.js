@@ -72,12 +72,12 @@ router.put("/:id", async (req, res) => {
 //Delete a blog
 router.delete("/:id", async (req, res) => {
   try {
-    const deletedBlog = await Blog.findByIdAndDelete();
+    const deletedBlog = await Blog.findByIdAndDelete(req.params.id);
 
     if (!deletedBlog) {
-      return res.status(404).json("blog not found.");
+      return res.status(404).json({ message: "Blog not found." });
     }
-    res.json(500).json({ message: "Deleted blog successfully" });
+    res.json(200).json({ message: "Deleted blog successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -87,21 +87,34 @@ router.delete("/:id", async (req, res) => {
 router.post("/:id/comments", async (req, res) => {
   try {
     const { text, userId } = req.body;
-    const addedBlog = await Blog.findById(req.params.id);
+    const blog = await Blog.findById(req.params.id);
 
-    if (!addedBlog) {
-      return res.status(404);
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
     }
 
-    Blog.comments.push({ text, userId });
+    blog.comments.push({ text, userId });
     await Blog.save();
 
     res.status(201).json();
   } catch (err) {
-    res.status(500);
+    res.status(500).json({ error: err.message });
   }
 });
 
 // DELETE a comment
+router.delete("/:id/comments/:commentsId", async (req, res) => ){
+  try 
+  {const blog = await Blog.findById(req.params.id)
+
+  if (!blog) {
+    return res.status(404).json({message: "Blog not found"})
+  }
+  await blog.save()
+  res.status(200).json({message: "Comment deleted successfully", blog});
+  } catch (err) {
+  res.status(500).json({ error: err.message})
+  }
+} 
 
 module.exports = router;
