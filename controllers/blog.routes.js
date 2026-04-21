@@ -76,7 +76,7 @@ router.delete("/:id", async (req, res) => {
     if (!deletedBlog) {
       return res.status(404).json({ message: "Blog not found." });
     }
-    res.json(200).json({ message: "Deleted blog successfully" });
+    res.status(200).json({ message: "Deleted blog successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -93,7 +93,7 @@ router.post("/:id/comments", async (req, res) => {
     }
 
     blog.comments.push({ text, userId });
-    await Blog.save();
+    await blog.save();
 
     res.status(201).json();
   } catch (err) {
@@ -109,6 +109,7 @@ router.delete("/:id/comments/:commentsId", async (req, res) => {
     if (!blog) {
       return res.status(404).json({ message: "Blog not found" });
     }
+    blog.comments.pull(req.params.commentsId);
     await blog.save();
     res.status(200).json({ message: "Comment deleted successfully", blog });
   } catch (err) {
