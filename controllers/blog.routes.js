@@ -3,7 +3,7 @@ const router = express.Router();
 const Blog = require("../models/Blog");
 
 //Create a new blog
-router.post("/", async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
   try {
     const { description, image } = req.body;
     const newBlog = new Blog({
@@ -47,7 +47,7 @@ router.get("/:id", async (req, res) => {
 
 //Update the blog
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", verifyToken, async (req, res) => {
   try {
     const updatedBlog = await Blog.findByIdAndUpdate(
       req.params.id,
@@ -69,7 +69,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //Delete a blog
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verifyToken, async (req, res) => {
   try {
     const deletedBlog = await Blog.findByIdAndDelete(req.params.id);
 
@@ -83,7 +83,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 //ADD a comment to a blog
-router.post("/:id/comments", async (req, res) => {
+router.post("/:id/comments", verifyToken, async (req, res) => {
   try {
     const { text, userId } = req.body;
     const blog = await Blog.findById(req.params.id);
@@ -102,7 +102,7 @@ router.post("/:id/comments", async (req, res) => {
 });
 
 // DELETE a comment
-router.delete("/:id/comments/:commentsId", async (req, res) => {
+router.delete("/:id/comments/:commentsId", verifyToken, async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id);
 

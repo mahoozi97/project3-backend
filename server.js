@@ -23,7 +23,7 @@ app.use(logger("dev"));
 // Routes go here
 app.use("/auth", authRouter);
 app.use("/booking", verifyToken, bookingRouter);
-app.use("/api/blog", blogRouter);
+app.use("/api/blog", verifyToken, blogRouter);
 
 app.listen(3000, () => {
   console.log("The express app is ready!");
