@@ -3,6 +3,25 @@ const Booking = require("../models/Booking");
 
 router.post("/", async (req, res) => {
   try {
+    const start = new Date(req.body.date);
+    start.setUTCHours(0, 0, 0, 0);
+
+    const end = new Date(req.body.date);
+    end.setUTCHours(23, 59, 59, 999);
+
+    const foundBooking = await Booking.find({
+      date: { $gte: start, $lte: end },
+      driver: req.body.driver,
+      status: { $in: ["Pending ⏳", "Accepted ✅"] },
+    });
+
+    if (foundBooking.length > 0) {
+      return res.status(409).json({
+        error:
+          "This booking is unavailable. Please select a different date or driver.",
+      });
+    }
+
     console.log(req.user);
     req.body.userId = req.user._id;
     const createdBooking = await Booking.create(req.body);
