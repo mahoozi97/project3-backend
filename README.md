@@ -1,6 +1,8 @@
-# GCC Trip Booking — Backend
+# KhalijiGo — Backend
 
 A Node.js/Express REST API for booking one-way car trips from Bahrain to GCC countries. Handles user authentication, booking management with driver conflict prevention, and a blog system.
+
+> 🔗 **Frontend UI Repository:** [View the React.js Frontend Here](https://github.com/mahoozi97/KhalijiGo-frontend)
 
 ---
 
@@ -42,10 +44,10 @@ JWT_SECRET=your_jwt_secret
 
 ### Auth — `/auth`
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| POST | `/auth/sign-up` | ❌ | Register a new user |
-| POST | `/auth/sign-in` | ❌ | Login and receive a JWT |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/auth/sign-up` | Register a new user |
+| POST | `/auth/sign-in` | Login and receive a JWT |
 
 ### Bookings — `/booking`
 
@@ -59,15 +61,15 @@ JWT_SECRET=your_jwt_secret
 
 ### Blogs — `/api/blogs`
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| POST | `/api/blogs` | ✅ | Create a blog post |
-| GET | `/api/blogs` | ❌ | Get all blog posts |
-| GET | `/api/blogs/:id` | ❌ | Get a single blog post |
-| PUT | `/api/blogs/:id` | ✅ | Update a blog post |
-| DELETE | `/api/blogs/:id` | ✅ | Delete a blog post |
-| POST | `/api/blogs/:id/comments` | ✅ | Add a comment |
-| DELETE | `/api/blogs/:id/comments/:commentId` | ✅ | Delete a comment |
+| Method | Endpoint | Auth | Role | Description |
+|--------|----------|------|------|-------------|
+| POST | `/api/blogs` | ✅ | Admin | Create a new blog post |
+| GET | `/api/blogs` | ❌ | — | Get all blog posts |
+| GET | `/api/blogs/:id` | ❌ | — | Get a single blog post |
+| PUT | `/api/blogs/:id` | ✅ | Admin | Update an existing blog post |
+| DELETE | `/api/blogs/:id` | ✅ | Admin | Delete a blog post |
+| POST | `/api/blogs/:id/comments` | ✅ | User | Add a comment to a post |
+| DELETE | `/api/blogs/:id/comments/:commentId` | ✅ | Admin/User | Delete a comment |
 
 ---
 
