@@ -33,7 +33,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// get all booking
+// get all booking (Admin)
 router.get("/", async (req, res) => {
   try {
     if (req.user.role !== "admin") {
@@ -49,7 +49,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// get all booking by userId
+// get all booking by userId (User)
 router.get("/my-bookings", async (req, res) => {
   try {
     const userId = req.user._id;
@@ -62,28 +62,7 @@ router.get("/my-bookings", async (req, res) => {
   }
 });
 
-// get one booking by id & userId
-router.get("/:id", async (req, res) => {
-  try {
-    const userId = req.user._id;
-    const foundBooking = await Booking.findOne({
-      _id: req.params.id,
-      userId: userId,
-    });
-
-    if (!foundBooking) {
-      return res.status(404).json({ error: "Booking not found" });
-    }
-
-    console.log("✅ fetched booking by Id & userId successfully", foundBooking);
-    res.status(200).json(foundBooking);
-  } catch (error) {
-    console.log("❌ Error fetching booking by Id & userId: ", error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// edit the booking
+// edit the booking (Admin)
 router.put("/:id", async (req, res) => {
   try {
     const foundBooking = await Booking.findById(req.params.id);
@@ -112,7 +91,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// delete the booking
+// delete the booking (Admin)
 router.delete("/:id", async (req, res) => {
   try {
     const foundBooking = await Booking.findById(req.params.id);
